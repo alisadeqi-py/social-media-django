@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+ <h2 class="text-center">{{ user.username }}</h2>
+
+{% if request.user.is_authenticated %}
+
+<a href="{% url 'home:post-create' %}">create</a>
+
+{% endif %}
+
+<p>{{is_following}}</p>
+
+{% if request.user.id != user.id and is_following == False  %}
+
+    <a href="{% url 'account:user-follow' user.id %}">follow</a>
+
+{% elif request.user.id != user.id and is_following %}   
+
+    <a href="{% url 'account:user-unfollow' user.id %}">Unfollow</a>
+
+{% endif %}
+
+{% for post in posts %}
+
+<div class="card">
+    {% for post in posts %}
+    <a href="{% url 'home:post-detail'  post.id post.slug %} " class="card-bosy">{{ post.body }}</a>
+    {% endfor %}
+</div>
+
+{% endfor %}
+
+{% endblock %}
